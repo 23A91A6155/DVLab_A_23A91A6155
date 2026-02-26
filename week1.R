@@ -1,49 +1,51 @@
-#Load Air Passeners Dataset
-data(AirPassengers)
+data(VADeaths)
 
-#Verify the dataset
-?AirPassengers
-class(AirPassengers)
-View(AirPassengers)
+VADeaths
+View(VADeaths)
+?VADeaths
+class(VADeaths)
 
-#Convert dataset to dataframe
-ap_df <- data.frame(
-  year <- time(AirPassengers),
-  passengers = as.numeric(AirPassengers)
+va_df <- as.data.frame(VADeaths)
+va_df$AgeGroups <- rownames(VADeaths)
+va_df
+va_long <- reshape(va_df,
+                   direction = "long",
+                   varying = colnames(VADeaths),
+                   v.names = "DeathRate",
+                   timevar = "Population",
+                   times = colnames(VADeaths)
 )
-ap_df
+hist(va_long$DeathRate,
+     main = "Histogram of VA Deathrates",
+     xlab = "Deathrate Bins",
+     ylab = "frequency")
 
-#Data frame with years and months Seperately
-ap_df_months<-data.frame(
-  year=floor(time(AirPassengers)),
-  month=cycle(time(AirPassengers)),
-  passengers=as.numeric(AirPassengers)
-)
-ap_df_months
+hist(va_long$DeathRate,
+     main = "Histogram of VA Deathrates",
+     xlab = "Deathrate Bins",
+     ylab = "frequency",
+     col = 'lightblue',
+     border = 'darkblue')
 
-#basic plot
-plot(AirPassengers)
+hist(va_long$DeathRate,
+     breaks = 8,
+     main = "Histogram of VA Deathrates",
+     xlab = "Deathrate Bins",
+     ylab = "frequency",
+     col = 'lightblue',
+     border = 'darkblue')
 
-#plot with title,axis labels and color
-plot(AirPassengers,
-     type='l',
-     main="Air Passengers Trend Analysis",
-     xlab="Months",
-     ylab="no.of Passengers",
-     col="red"
-)
-#changing the line width and point color
-plot(AirPassengers,
-     type='l',
-     lwd=1.5,
-     main="Air Passengers Trend Analysis",
-     xlab="Months",
-     ylab="no.of Passengers",
-     col="red"
-)
-points(AirPassengers,
-       type='o',
-       pch=10,
-       col="green"
-)
-grid()
+hist(va_long$DeathRate,
+     breaks = seq(0,80,by=10),
+     main = "Histogram of VA Deathrates",
+     xlab = "Deathrate Bins",
+     ylab = "frequency",
+     col = 'lightblue',
+     border = 'darkblue')
+
+
+
+library("ggplot2")
+
+ggplot(va_long,aes(x=DeathRate)) +
+  geom_histogram()
