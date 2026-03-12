@@ -1,0 +1,51 @@
+install.packages("leaflet")
+library(leaflet)
+leaflet()%>%addTiles()
+leaflet()%>%
+  addTiles()%>%
+  setView(
+    lng=78.9629,
+    lat=20.5937,
+    zoom=5
+  )
+leaflet()%>%
+  addTiles()%>%
+  addMarkers(
+    lng=77.2088,
+    lat=28.6139
+  )
+leaflet()%>%
+  addTiles()%>%
+  addMarkers(
+    lng=77.2088,
+    lat=28.6139,
+    popup="New Delhi"
+  )
+cities<-data.frame(
+  name=c("Delhi","Mumbai","Chennai","Kolkota"),
+  lat=c(28.6139,18.9582,13.0827,22.5744),
+  lng=c(77.2088,72.8321,80.2707,88.3629)
+)
+
+leaflet(cities)%>%
+  addTiles()%>%
+  addMarkers(
+    lng=~lng,
+    lat=~lat,
+    popup=~name
+  )
+leaflet(cities)%>%
+  addTiles()%>%
+  addCircleMarkers(
+    lng=~lng,
+    lat=~lat,
+    radius=6,
+    color="red",
+    popup=~name
+  )
+cities$pop<-
+  c(30,20,11,15)
+pal<-colorNumeric(
+  palette="red",
+  domain=cities$pop
+)
